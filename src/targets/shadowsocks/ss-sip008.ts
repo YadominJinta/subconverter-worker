@@ -1,4 +1,3 @@
-import { Target } from '../target';
 import { SsSubNode } from './index';
 
 interface SsSip008Node {
@@ -11,7 +10,7 @@ interface SsSip008Node {
   plugin_opts: string
 }
 
-class SsSip008 extends Target {
+export class SsSip008 {
   public static parse(text: string): SsSubNode[] {
     const value: SsSip008Node[] = JSON.parse(text);
 
@@ -40,18 +39,23 @@ class SsSip008 extends Target {
 
   public static stringfy(value: SsSubNode[]): string {
     const result: SsSip008Node[] = value.map((v) => {
-      let plugin_opts = "";
-      Object.entries(v.plugin_opts).forEach((k,v) => {
-        plugin_opts += `;${k}=${v}`
-      })
-      return {
-        remark: v.tag,
-        server: v.host,
-        server_port: v.port,
-        password: v.password,
-        plugin: v.plugin,
-        plugin_opts: plugin_opts,
-        method: v.method
+      try {
+        let plugin_opts = "";
+        Object.entries(v.plugin_opts).forEach(([k, v]) => {
+          plugin_opts += `;${k}=${v}`
+        })
+        return {
+          remark: v.tag,
+          server: v.host,
+          server_port: v.port,
+          password: v.password,
+          plugin: v.plugin,
+          plugin_opts: plugin_opts,
+          method: v.method
+        }
+      } catch (e) {
+        console.log(e);
+        console.table(v);
       }
     })
     return JSON.stringify(result);

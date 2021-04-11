@@ -1,20 +1,11 @@
-import { Target } from '../target';
 import { SsSubNode } from './index';
 
-/*
-SIP002 即 `ss://...`形式
-```
-SS-URI = "ss://" userinfo "@" hostname ":" port [ "/" ] [ "?" plugin ] [ "#" tag ]
-userinfo = websafe-base64-encode-utf8(method  ":" password)
-```
+export class SsSip002 {
 
-*/
-export class SsSip002 extends Target {
-
-  static parseSingle(text: string): SsSubNode{
+  public static parseSingle(text: string): SsSubNode{
     const url = new URL(text);
-    if(url.protocol != 'ss') {
-      throw new Error("Protocol not match, required ss://");
+    if(url.protocol != 'ss:') {
+      throw new Error(`Protocol ${url.protocol} not match, required ss://`);
     }
 
     const search = new URLSearchParams(url.search);
@@ -45,7 +36,7 @@ export class SsSip002 extends Target {
 
   public static stringfySingle(value: SsSubNode): string {
     if(value.type != 'ss') {
-      throw new Error("Type not match, required ss");
+      throw new Error(`Type ${value.type} not match, required ss`);
     }
 
     const url = new URL('ss://');
@@ -69,14 +60,22 @@ export class SsSip002 extends Target {
   public static stringfy(value: SsSubNode[]): string {
     let result = "";
     value.forEach(v => {
-      result += SsSip002.stringfySingle(v) + "\n";
+      try {
+        result += SsSip002.stringfySingle(v) + "\n";
+      } catch (e) {
+        console.log(e);
+      }
     });
     return result;
   }
 
   public static parse(text: string): SsSubNode[] {
     return text.split('\n').map(line => {
-      return SsSip002.parseSingle(line);
+      try {
+        return SsSip002.parseSingle(line);
+      } catch (e) {
+        console.log(e);
+      }
     })
   }
 }

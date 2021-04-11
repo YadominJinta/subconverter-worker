@@ -1,6 +1,7 @@
-import { SubNode } from '../target';
+import { SubNode } from '../index';
 
 export interface SsSubNode extends SubNode {
+  password: string,
   plugin: string
   plugin_opts: {
     [index:string]: string
