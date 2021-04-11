@@ -15,7 +15,7 @@ export class SsSip008 {
     const value: SsSip008Node[] = JSON.parse(text);
 
     return value.map(v => {
-      let plugin_opts: {[index:string]:string} = {};
+      let plugin_opts: { [index: string]: string } = {};
       const plugin_str = v.plugin_opts;
       if (plugin_str) {
         let plugin_arr = plugin_str.split(';');
@@ -41,10 +41,9 @@ export class SsSip008 {
     const result: SsSip008Node[] = value.map((v) => {
       try {
         if (v.plugin) {
-          let plugin_opts = "";
-          Object.entries(v.plugin_opts).forEach(([k, v]) => {
-            plugin_opts += `;${k}=${v}`
-          })
+          let plugin_opts = Object.entries(v.plugin_opts).map(([k, v]) => {
+            return `${k}=${v}`
+          }).join(';');
           return {
             remark: v.tag,
             server: v.host,

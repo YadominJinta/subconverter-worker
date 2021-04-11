@@ -15,7 +15,7 @@ export class SsSip002 {
     let plugin_opts: {[index:string]:string} = {};
     if (plugin_str) {
       let plugin_arr = plugin_str.split(';');
-      plugin = plugin_arr.slice(0,1)[0];
+      plugin = plugin_arr.shift();
       plugin_arr.forEach(plugin_opt => {
         const [key,value] = plugin_opt.split('=');
         plugin_opts[key] = value;

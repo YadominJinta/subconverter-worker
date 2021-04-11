@@ -21,11 +21,17 @@ const Handler = async (req: Request): Promise<Response> => {
   const convertType = search.get('to');
   const fromUrl = search.get('fromUrl');
 
-  if(fromType && convertType && fromUrl) {
+  if(fromType && convertType) {
 
     let fromObj: SubNode[] = [];
     let result: string = "";
-    const sub = await getSub(fromUrl);
+    let sub = "";
+
+    if (req.method === 'GET') {
+      sub = await getSub(fromUrl);
+    } else if (req.method === 'POST') {
+      sub = await req.text()
+    }
 
     switch (fromType) {
       case 'ssbase64':
