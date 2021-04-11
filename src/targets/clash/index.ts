@@ -8,6 +8,6 @@ export interface ClashNode {
 
 export interface ClashSsNode extends ClashNode {
   password: string,
-  plugin: string,
-  'plugin-opts': {[index:string]:string}
+  plugin?: string,
+  'plugin-opts'?: {[index:string]:string}
 }

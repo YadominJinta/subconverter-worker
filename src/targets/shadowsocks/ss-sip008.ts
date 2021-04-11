@@ -6,8 +6,8 @@ interface SsSip008Node {
   server_port: number,
   password: string,
   method: string,
-  plugin: string,
-  plugin_opts: string
+  plugin?: string,
+  plugin_opts?: string
 }
 
 export class SsSip008 {
@@ -40,18 +40,28 @@ export class SsSip008 {
   public static stringfy(value: SsSubNode[]): string {
     const result: SsSip008Node[] = value.map((v) => {
       try {
-        let plugin_opts = "";
-        Object.entries(v.plugin_opts).forEach(([k, v]) => {
-          plugin_opts += `;${k}=${v}`
-        })
-        return {
-          remark: v.tag,
-          server: v.host,
-          server_port: v.port,
-          password: v.password,
-          plugin: v.plugin,
-          plugin_opts: plugin_opts,
-          method: v.method
+        if (v.plugin) {
+          let plugin_opts = "";
+          Object.entries(v.plugin_opts).forEach(([k, v]) => {
+            plugin_opts += `;${k}=${v}`
+          })
+          return {
+            remark: v.tag,
+            server: v.host,
+            server_port: v.port,
+            password: v.password,
+            plugin: v.plugin,
+            plugin_opts: plugin_opts,
+            method: v.method
+          }
+        } else {
+          return {
+            remark: v.tag,
+            server: v.host,
+            server_port: v.port,
+            password: v.password,
+            method: v.method
+          }
         }
       } catch (e) {
         console.log(e);

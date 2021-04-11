@@ -47,12 +47,14 @@ export class SsSip002 {
 
     const search = new URLSearchParams();
     const plugin = value.plugin;
-    let plugin_opts = "";
-    Object.entries(value.plugin_opts).forEach((k,v) => {
-      plugin_opts += `;${k}=${v}`
-    })
-    search.set('plugin', plugin + plugin_opts);
-    url.search = search.toString()
+    if (value.plugin){
+      let plugin_opts = "";
+      Object.entries(value.plugin_opts).forEach((k, v) => {
+        plugin_opts += `;${k}=${v}`
+      })
+      search.set('plugin', plugin + plugin_opts);
+      url.search = search.toString()
+    }
     return url.href;
 
   }
